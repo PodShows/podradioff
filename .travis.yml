@@ -11,7 +11,7 @@ env:
   - secure: rVt1LEQ3LhNwvNd4r7l5qvq+8lTpGM475EuR2xQ8TRFePRszgeXs/eMAPbEWnkbtP4rjYuYEPwElUcK/35xhP/0xD3KCTE8KeUN0flOPyKWyvR9ms5acPwM5PXHz5I1RuzC1ZaZoXSXk2ylZxMbUpeS2NhGqko5iZrU07lp24v4mXksdoq214ZhaeiHZ2/jdcu12y/jqPUQd/NBexfhZUkwSxrUIuj/xNKKQwU4R3rDPcjt1dAo/eOWs3vnVhq9c0b80V5uNXgbrDmgv0GotqctE1kbGy16VCkBdlu8hHAnoOfuz4OwvbW1zYYocnChLAYsKSk8x0jFA/o0djKUg1E5SPVY8ZFG9FTgPXlXc1gI0kqQyIlFVv1eegbGY8/IBGFhQlApOkgfg2uKTCw7zqiYABGz9lvgTjMGLwoyzCYf1X6I75Ot8yiMbVRY17Yen0lz9ihWMDplGdCzTeNlkykvOL0bWG04r0SUC/Sa2YWcYYk3HRYKkLGQK0K3bgYkleZddRSd0wbC8fxYpJ+P2LyVuYjNT9fP1ClpoP0M1dtwowoVKnxpNr0iYG5PHuavcsex3HdXpH6yLrhHm0Z6MCi677aiXhpoA9I9gdA0OcfLigCGq1913fclc30APBoGUPySWw+bPPdhBM6l9gOZASR8BNhWSm4ZUMH5WTWs4C/M=
 script:
 - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-- export REPO=gicmadev/gicma.dev
+- export REPO=podshows/podradioff
 - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
   ; fi`
 - docker build -f Dockerfile -t $REPO:$COMMIT .
