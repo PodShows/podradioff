@@ -1,0 +1,18 @@
+# project_name=podradioff
+version: "3"
+services:
+  podradioff: # scale=2
+    image: podshows/podradioff:latest
+    networks:
+      - traefik
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.backend: "podradioff"
+      traefik.frontend.rule: "Host:podradio.fr,www.podradio.fr,podradio.test"
+      traefik.frontend.redirect.regex: ^https?://www.podradio.fr/(.*)
+      traefik.frontend.redirect.replacement: https://podradio.fr/$${1}
+
+networks:
+  traefik:
+    external: true

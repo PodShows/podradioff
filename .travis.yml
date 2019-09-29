@@ -1,0 +1,27 @@
+language: node_js
+sudo: false
+node_js:
+  - 12
+env:
+  global:
+    - NODE_ENV=test
+    - COMMIT=${TRAVIS_COMMIT::8}
+script:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - export REPO=gicmadev/gicma.dev
+    - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
+      ; fi`
+    - docker build -f Dockerfile -t $REPO:$COMMIT .
+    - docker tag $REPO:$COMMIT $REPO:$TAG
+    - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+    - docker push $REPO
+before_deploy:
+    - eval "$(ssh-agent -s)"
+    - chmod 600 /tmp/deploy_key
+    - ssh-add /tmp/deploy_key
+    - ssh-keyscan "$SERVER" >> ~/.ssh/known_hosts
+deploy:
+- provider: script
+  script: "./deploy.sh"
+  on:
+    branch: master
