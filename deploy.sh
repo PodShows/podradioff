@@ -11,9 +11,9 @@ trap '[ $? -ne 0 ] && echo "\"${last_command}\" command filed with exit code $?.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
 
-SSH_HOST=gicma.dev@$SERVER
-COMPOSE_PROJECT_NAME=gicma.dev
-BASE=/home/gicma.dev/production
+USER=podradioff
+SSH_HOST=$USER@$SERVER
+BASE=/home/$USER/production
 KEEP_RELEASES=2
 
 RELEASEN=$(date -u +%Y%m%d%H%M%S)
@@ -25,14 +25,14 @@ CMD
 
 rsync -avzPhc --recursive --files-from=deploy.files . $SSH_HOST:$BASE/releases/$RELEASEN/
 
-ssh $SSH_HOST BASE=$BASE KEEP_RELEASES=$KEEP_RELEASES RELEASEN=$RELEASEN COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME 'bash -s' <<'CMD'
+ssh $SSH_HOST BASE=$BASE KEEP_RELEASES=$KEEP_RELEASES RELEASEN=$RELEASEN 'bash -s' <<'CMD'
 # exit when any command fails
 set -e
 
 echo "Launching release"
 cd $BASE/releases/$RELEASEN
 
-mv docker-compose.production.yml docker-compose.yml
+mv docker-compose.prod.yml docker-compose.yml
 
 ./containerctl.sh pull
 ./containerctl.sh up -d --remove-orphans
